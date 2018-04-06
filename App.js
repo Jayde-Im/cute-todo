@@ -10,6 +10,7 @@ import {
   Dimensions,
   Platform
 } from "react-native";
+import { AppLoading } from "expo";
 import ToDo from "./ToDo";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -17,11 +18,20 @@ const { height, width } = Dimensions.get("window");
 
 export default class App extends React.Component {
   state = {
-    newToDo: ""
+    newToDo: "",
+    loadedToDos: false
+  };
+
+  componentDidMount = () => {
+    this._loadToDos();
   };
 
   render() {
-    const { newToDo } = this.state;
+    const { newToDo, loadedToDos } = this.state;
+
+    if (!loadedToDos) {
+      return <AppLoading />;
+    }
 
     return (
       <View style={styles.container}>
@@ -38,7 +48,7 @@ export default class App extends React.Component {
             autoCorrect={false}
           />
           <ScrollView contentContainerStyle={styles.toDos}>
-            <ToDo />
+            <ToDo text={"Hello I'm a To Do"} />
           </ScrollView>
         </View>
       </View>
@@ -50,6 +60,8 @@ export default class App extends React.Component {
       newToDo: text
     });
   };
+
+  _loadToDos = () => {};
 }
 
 const styles = StyleSheet.create({
